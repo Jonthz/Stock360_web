@@ -250,63 +250,67 @@
                                 <h6 class="fw-bold text-warning mb-3">MODO PRESENTACIÓN</h6>
                                 <p class="small text-muted mb-3">Simula la llegada de múltiples pedidos independientes.
                                 </p>
-                                <button class="btn btn-warning w-100 btn-sm fw-bold" onclick="simulateActivity()">
+                                <button class="btn btn-warning w-100 btn-sm fw-bold mb-2" onclick="simulateActivity()">
                                     <i class="bi bi-plus-circle-fill me-1"></i>GENERAR NUEVA ORDEN LIVE
+                                </button>
+                                <button class="btn btn-outline-danger w-100 btn-sm fw-bold" onclick="resetDatabase()">
+                                    <i class="bi bi-trash3 me-1"></i>REINICIAR BBDD CLOUD
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- === VIEW: REPORTS === -->
-                <div id="view-reports" class="d-none">
-                    <h2 class="h4 fw-bold mb-4">Reportes & Business Intelligence</h2>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="card border-0 shadow-sm p-4 mb-4">
-                                <h6 class="fw-bold mb-4">Productividad por Día (Semana Actual)</h6>
-                                <div style="position: relative; height: 350px;">
-                                    <canvas id="reportChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card border-0 shadow-sm p-4 text-center">
-                                <h1 class="display-4 fw-bold text-success">98%</h1>
-                                <p class="text-muted">Exactitud de Inventario</p>
-                                <hr>
-                                <button class="btn btn-primary w-100 mb-2"><i
-                                        class="bi bi-file-earmark-pdf me-2"></i>Exportar PDF</button>
-                                <button class="btn btn-outline-success w-100"><i
-                                        class="bi bi-file-earmark-excel me-2"></i>Exportar Excel</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- === VIEW: SETTINGS === -->
-                <div id="view-settings" class="d-none">
-                    <h2 class="h4 fw-bold mb-4">Configuración del Sistema</h2>
-                    <div class="card border-0 shadow-sm p-4 max-width-600">
-                        <div class="alert alert-info small">
-                            <i class="bi bi-info-circle me-2"></i> La conexión con Firebase está pre-configurada para
-                            este entorno de producción.
-                        </div>
-                        <div class="form-check form-switch mb-3">
-                            <input class="form-check-input" type="checkbox" checked>
-                            <label class="form-check-label">Notificaciones de Escritorio</label>
-                        </div>
-                        <div class="form-check form-switch mb-3">
-                            <input class="form-check-input" type="checkbox" checked>
-                            <label class="form-check-label">Auto-Refresco Inteligente</label>
-                        </div>
-                        <button class="btn btn-dark" onclick="alert('Configuración guardada localmente')">Guardar
-                            Cambios</button>
-                    </div>
-                </div>
-
-            </main>
         </div>
+
+        <!-- === VIEW: REPORTS === -->
+        <div id="view-reports" class="d-none">
+            <h2 class="h4 fw-bold mb-4">Reportes & Business Intelligence</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card border-0 shadow-sm p-4 mb-4">
+                        <h6 class="fw-bold mb-4">Productividad por Día (Semana Actual)</h6>
+                        <div style="position: relative; height: 350px;">
+                            <canvas id="reportChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm p-4 text-center">
+                        <h1 class="display-4 fw-bold text-success">98%</h1>
+                        <p class="text-muted">Exactitud de Inventario</p>
+                        <hr>
+                        <button class="btn btn-primary w-100 mb-2"><i class="bi bi-file-earmark-pdf me-2"></i>Exportar
+                            PDF</button>
+                        <button class="btn btn-outline-success w-100"><i
+                                class="bi bi-file-earmark-excel me-2"></i>Exportar Excel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === VIEW: SETTINGS === -->
+        <div id="view-settings" class="d-none">
+            <h2 class="h4 fw-bold mb-4">Configuración del Sistema</h2>
+            <div class="card border-0 shadow-sm p-4 max-width-600">
+                <div class="alert alert-info small">
+                    <i class="bi bi-info-circle me-2"></i> La conexión con Firebase está pre-configurada para
+                    este entorno de producción.
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">Notificaciones de Escritorio</label>
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" checked>
+                    <label class="form-check-label">Auto-Refresco Inteligente</label>
+                </div>
+                <button class="btn btn-dark" onclick="alert('Configuración guardada localmente')">Guardar
+                    Cambios</button>
+            </div>
+        </div>
+
+        </main>
+    </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -422,6 +426,23 @@
                 status: "in_progress"
             };
             renderLiveView();
+        }
+
+        async function resetDatabase() {
+            if (!confirm("¿Seguro que quieres borrar todo el historial en vivo de Firebase?")) return;
+            try {
+                // Enviamos un PUT {} para vaciar el nodo live_picking
+                await fetch(FIREBASE_URL, {
+                    method: 'PUT',
+                    body: JSON.stringify({}),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                livePickers = {};
+                renderLiveView();
+                alert("Historial de Cloud limpiado.");
+            } catch (e) {
+                alert("Error al limpiar: " + e.message);
+            }
         }
 
         // Init
