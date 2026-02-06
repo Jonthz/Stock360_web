@@ -260,55 +260,144 @@
                         </div>
                     </div>
                 </div>
-        </div>
 
-        <!-- === VIEW: REPORTS === -->
-        <div id="view-reports" class="d-none">
-            <h2 class="h4 fw-bold mb-4">Reportes & Business Intelligence</h2>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card border-0 shadow-sm p-4 mb-4">
-                        <h6 class="fw-bold mb-4">Productividad por Día (Semana Actual)</h6>
-                        <div style="position: relative; height: 350px;">
-                            <canvas id="reportChart"></canvas>
+
+                <!-- === VIEW: REPORTS === -->
+                <div id="view-reports" class="d-none">
+                    <h2 class="h4 fw-bold mb-4">Reportes & Business Intelligence</h2>
+
+                    <!-- Quick Stats Row -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm p-3 border-start border-danger border-4">
+                                <small class="text-muted fw-bold">TASA DE INCIDENCIAS</small>
+                                <div class="h3 fw-bold mb-0 text-danger">4.2%</div>
+                                <small class="text-muted">vs 3.8% semana anterior</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm p-3 border-start border-primary border-4">
+                                <small class="text-muted fw-bold">TOTAL PROCESADO</small>
+                                <div class="h3 fw-bold mb-0 text-primary">1,240 u.</div>
+                                <small class="text-muted">Esta semana</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm p-3 border-start border-success border-4">
+                                <small class="text-muted fw-bold">TIEMPO PROM. ORDEN</small>
+                                <div class="h3 fw-bold mb-0 text-success">12m 30s</div>
+                                <small class="text-muted">-1m 15s mejora</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Main Chart: In vs Out -->
+                        <div class="col-md-8">
+                            <div class="card border-0 shadow-sm p-4 mb-4">
+                                <h6 class="fw-bold mb-4">Flujo de Operación (Entradas vs Salidas)</h6>
+                                <div style="position: relative; height: 300px;">
+                                    <canvas id="flowChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Secondary Chart: Incidents -->
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm p-4 mb-4">
+                                <h6 class="fw-bold mb-4">Distribución de Incidencias</h6>
+                                <div style="position: relative; height: 300px;">
+                                    <canvas id="incidentChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Incidents Table -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 fw-bold"><i
+                                    class="bi bi-exclamation-triangle me-2 text-warning"></i>Registro de
+                                Novedades (Últimas 24h)</h6>
+                            <button class="btn btn-outline-success btn-sm"
+                                onclick="exportTableToCSV('reporte_incidencias.csv')">
+                                <i class="bi bi-file-earmark-spreadsheet me-2"></i>Exportar Excel
+                            </button>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0 align-middle" id="incidentsTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Hora</th>
+                                            <th>Orden</th>
+                                            <th>Producto</th>
+                                            <th>Tipo</th>
+                                            <th>Cant. Reportada</th>
+                                            <th>Operario</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>10:45 AM</td>
+                                            <td><span class="badge bg-light text-dark border">IN-2938</span></td>
+                                            <td>Filtro de Aceite PH3593A</td>
+                                            <td><span class="badge bg-danger">DAÑADO</span></td>
+                                            <td class="fw-bold text-danger">5 u.</td>
+                                            <td>Carlos_Z</td>
+                                        </tr>
+                                        <tr>
+                                            <td>09:12 AM</td>
+                                            <td><span class="badge bg-light text-dark border">IN-2935</span></td>
+                                            <td>Bujía Iridio IX</td>
+                                            <td><span class="badge bg-warning text-dark">FALTANTE</span></td>
+                                            <td class="fw-bold text-warning">2 u.</td>
+                                            <td>Ana_P</td>
+                                        </tr>
+                                        <tr>
+                                            <td>08:30 AM</td>
+                                            <td><span class="badge bg-light text-dark border">IN-2930</span></td>
+                                            <td>Disco de Freno Delantero</td>
+                                            <td><span class="badge bg-danger">DAÑADO</span></td>
+                                            <td class="fw-bold text-danger">1 u.</td>
+                                            <td>Lucho_X</td>
+                                        </tr>
+                                        <tr>
+                                            <td>08:15 AM</td>
+                                            <td><span class="badge bg-light text-dark border">IN-2928</span></td>
+                                            <td>Pastillas de Freno Cerámica</td>
+                                            <td><span class="badge bg-warning text-dark">FALTANTE</span></td>
+                                            <td class="fw-bold text-warning">10 u.</td>
+                                            <td>Carlos_Z</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card border-0 shadow-sm p-4 text-center">
-                        <h1 class="display-4 fw-bold text-success">98%</h1>
-                        <p class="text-muted">Exactitud de Inventario</p>
-                        <hr>
-                        <button class="btn btn-primary w-100 mb-2"><i class="bi bi-file-earmark-pdf me-2"></i>Exportar
-                            PDF</button>
-                        <button class="btn btn-outline-success w-100"><i
-                                class="bi bi-file-earmark-excel me-2"></i>Exportar Excel</button>
+
+                <!-- === VIEW: SETTINGS === -->
+                <div id="view-settings" class="d-none">
+                    <h2 class="h4 fw-bold mb-4">Configuración del Sistema</h2>
+                    <div class="card border-0 shadow-sm p-4 max-width-600">
+                        <div class="alert alert-info small">
+                            <i class="bi bi-info-circle me-2"></i> La conexión con Firebase está pre-configurada para
+                            este entorno de producción.
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">Notificaciones de Escritorio</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">Auto-Refresco Inteligente</label>
+                        </div>
+                        <button class="btn btn-dark" onclick="alert('Configuración guardada localmente')">Guardar
+                            Cambios</button>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- === VIEW: SETTINGS === -->
-        <div id="view-settings" class="d-none">
-            <h2 class="h4 fw-bold mb-4">Configuración del Sistema</h2>
-            <div class="card border-0 shadow-sm p-4 max-width-600">
-                <div class="alert alert-info small">
-                    <i class="bi bi-info-circle me-2"></i> La conexión con Firebase está pre-configurada para
-                    este entorno de producción.
-                </div>
-                <div class="form-check form-switch mb-3">
-                    <input class="form-check-input" type="checkbox" checked>
-                    <label class="form-check-label">Notificaciones de Escritorio</label>
-                </div>
-                <div class="form-check form-switch mb-3">
-                    <input class="form-check-input" type="checkbox" checked>
-                    <label class="form-check-label">Auto-Refresco Inteligente</label>
-                </div>
-                <button class="btn btn-dark" onclick="alert('Configuración guardada localmente')">Guardar
-                    Cambios</button>
-            </div>
         </div>
-
         </main>
     </div>
     </div>
@@ -393,25 +482,87 @@
             if (view === 'reports') initChart();
         }
 
-        let chart = null;
+        let flowChartInstance = null;
+        let incidentChartInstance = null;
+
         function initChart() {
-            if (chart) chart.destroy();
-            const ctx = document.getElementById('reportChart').getContext('2d');
-            chart = new Chart(ctx, {
-                type: 'line',
+            if (flowChartInstance) flowChartInstance.destroy();
+            if (incidentChartInstance) incidentChartInstance.destroy();
+
+            // 1. Flow Chart (Bar)
+            const ctxFlow = document.getElementById('flowChart').getContext('2d');
+            flowChartInstance = new Chart(ctxFlow, {
+                type: 'bar',
                 data: {
-                    labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
+                    labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                    datasets: [
+                        {
+                            label: 'Recepciones (IN)',
+                            data: [45, 52, 38, 60, 48, 20],
+                            backgroundColor: '#1565C0',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Despachos (OUT)',
+                            data: [30, 45, 40, 55, 62, 35],
+                            backgroundColor: '#2E7D32',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // 2. Incident Chart (Doughnut)
+            const ctxIncident = document.getElementById('incidentChart').getContext('2d');
+            incidentChartInstance = new Chart(ctxIncident, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Dañado (Mal Estado)', 'Faltante (Incompleto)'],
                     datasets: [{
-                        label: 'Productividad',
-                        data: [12, 19, 15, 17, 22, 10, 5],
-                        borderColor: '#FFB300',
-                        fill: true,
-                        backgroundColor: 'rgba(255, 179, 0, 0.1)',
-                        tension: 0.4
+                        data: [6, 12], // Dummy data based on table rows
+                        backgroundColor: ['#dc3545', '#ffc107'],
+                        borderWidth: 0
                     }]
                 },
-                options: { maintainAspectRatio: false, responsive: true }
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
             });
+        }
+
+        function exportTableToCSV(filename) {
+            const csv = [];
+            const rows = document.querySelectorAll("#incidentsTable tr");
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = [], cols = rows[i].querySelectorAll("td, th");
+                for (let j = 0; j < cols.length; j++)
+                    row.push('"' + cols[j].innerText + '"'); // Quote strings to handle commas
+
+                csv.push(row.join(","));
+            }
+
+            downloadCSV(csv.join("\n"), filename);
+        }
+
+        function downloadCSV(csv, filename) {
+            const csvFile = new Blob([csv], { type: "text/csv" });
+            const downloadLink = document.createElement("a");
+            downloadLink.download = filename;
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
         }
 
         function simulateActivity() {
